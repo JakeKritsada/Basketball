@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            transition: background-color 0.5s ease;
+        }
+
+        #timer-container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #header {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #333; /* เพิ่มสีข้อความ */
+        }
+
+        #timer {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        #timeout-label {
+            font-size: 1.5em;
+            margin: 20px 0;
+            color: red;
+        }
+
+        #buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            font-size: 1.5em;
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        #start-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        #reset-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+
+        .dark-background {
+            background-color: black !important;
+        }
+
+        #user-input {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            padding: 10px;
+            width: 80%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer-container">
+        <input type="text" id="user-input" placeholder="Type your text here">
+        <div id="header" onclick="loadTextFromInput()">Click to load text</div>
+        <button id="start-button" onclick="startTimer()">Start</button>
+        <div id="timer">00:30</div>
+        <div id="timeout-label"></div>
+        <button id="reset-button" onclick="resetTimer()">Reset</button>
+    </div>
+
+    <script>
+        let timer;
+        let time = 30;
+
+        function startTimer() {
+            document.getElementById('timeout-label').innerText = 'เวลาขอเวลานอก';
+            document.body.classList.add('dark-background');
+            timer = setInterval(updateTimer, 1000);
+            document.getElementById('start-button').setAttribute('disabled', 'true');
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            document.getElementById('timer').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            if (time > 0) {
+                time--;
+            } else {
+                clearInterval(timer);
+                document.getElementById('timeout-label').innerText = 'Time Out!';
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            time = 30;
+            document.getElementById('timer').innerText = '00:30';
+            document.getElementById('timeout-label').innerText = '';
+            document.getElementById('start-button').removeAttribute('disabled');
+            document.body.classList.remove('dark-background');
+        }
+
+        function loadTextFromInput() {
+            let newText = document.getElementById('user-input').value;
+            document.getElementById('header').innerText = newText;
+            // ลบบรรทัดนี้
+            // document.getElementById('header').style.backgroundColor = '#001f3f'; // เพิ่มสีเมื่อคลิก
+            document.getElementById('user-input').style.display = 'none'; // ซ่อน input
+        }
+    </script>
+</body>
+</html>
